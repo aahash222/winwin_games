@@ -8,8 +8,11 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
+    "vue-axios": "^3.2.5",
+    "vue-native-websocket-vue3": "^3.1.4",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
   },
@@ -37,13 +40,25 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/vue3-essential",
+      "plugin:vue/essential",
       "@vue/standard"
     ],
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "vue/html-indent": 1,
+      "vue/no-unused-vars": 1,
+      "no-unused-vars": 1,
+      "no-prototype-builtins": 1,
+      "comma-dangle": "off",
+      "vue/no-multiple-template-root": 1,
+      "spaced-comment": "off",
+      "no-trailing-spaces": "off",
+      "space-before-function-paren": "off",
+      "no-multiple-empty-lines": "off",
+      "padded-blocks": "off"
+    }
   },
   "browserslist": [
     "> 1%",
