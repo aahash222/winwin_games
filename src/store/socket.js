@@ -23,6 +23,10 @@ const moduleSocket = {
       subscribes: {
         session: null,
         dice: null,
+        mines_get: null,
+        mines_bet: null,
+        mines_select: null,
+        mines_cashout: null,
       }
     }
   },
@@ -32,7 +36,13 @@ const moduleSocket = {
     getSocketPing: state => state.socket.socketPing,
 
     subscribeSocketSession: state => state.socket.subscribes.session,
+
     subscribeSocketDice: state => state.socket.subscribes.dice,
+
+    subscribeSocketMinesGet: state => state.socket.subscribes.mines_get,
+    subscribeSocketMinesBet: state => state.socket.subscribes.mines_bet,
+    subscribeSocketMinesSelect: state => state.socket.subscribes.mines_select,
+    subscribeSocketMinesCashout: state => state.socket.subscribes.mines_cashout,
   },
   actions: {
     socketConnect: () => {
@@ -44,6 +54,19 @@ const moduleSocket = {
     },
     sendSocketDice: (context, data) => {
       main.config.globalProperties.$socket.sendObj({ action: 'dice', data: data })
+    },
+
+    sendSocketMinesGet: (context, data) => {
+      main.config.globalProperties.$socket.sendObj({ action: 'mines_get', data: data })
+    },
+    sendSocketMinesBet: (context, data) => {
+      main.config.globalProperties.$socket.sendObj({ action: 'mines_bet', data: data })
+    },
+    sendSocketMinesSelect: (context, data) => {
+      main.config.globalProperties.$socket.sendObj({ action: 'mines_select', data: data })
+    },
+    sendSocketMinesCashout: (context, data) => {
+      main.config.globalProperties.$socket.sendObj({ action: 'mines_cashout', data: data })
     },
     sendSocketPong: () => {
       main.config.globalProperties.$socket.sendObj({ action: 'pong' })
@@ -74,11 +97,28 @@ const moduleSocket = {
     subscribeSocketSession: state => { state.socket.subscribes.session = null },
     subscribeSocketDice: state => { state.socket.subscribes.dice = null },
 
+    subscribeSocketMinesGet: state => { state.socket.subscribes.mines_get = null },
+    subscribeSocketMinesBet: state => { state.socket.subscribes.mines = null },
+    subscribeSocketMinesSelect: state => { state.socket.subscribes.mines_select = null },
+    subscribeSocketMinesCashout: state => { state.socket.subscribes.mines_cashout = null },
+
     SOCKET_session (state, data) {
       state.socket.subscribes.session = data
     },
     SOCKET_dice (state, data) {
       state.socket.subscribes.dice = data
+    },
+    SOCKET_mines_get (state, data) {
+      state.socket.subscribes.mines_get = data
+    },
+    SOCKET_mines_bet (state, data) {
+      state.socket.subscribes.mines_bet = data
+    },
+    SOCKET_mines_select (state, data) {
+      state.socket.subscribes.mines_select = data
+    },
+    SOCKET_mines_cashout (state, data) {
+      state.socket.subscribes.mines_cashout = data
     },
     SOCKET_disconnect (state) {
       clearTimeout(state.socket.socketTimeout)
