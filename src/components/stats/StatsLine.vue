@@ -8,7 +8,7 @@
         </div>
         <div>
           <div class="stats-line-bet">{{ item.bet }}</div>
-          <div class="stats-line-currency">c</div>
+          <div class="stats-line-currency"><img :src="require('@/assets/games/coin_' + item.currency + '.svg')" alt="" /></div>
         </div>
       </div>
     </transition-group>
@@ -24,6 +24,8 @@ export default {
 
 <style lang="scss" scoped>
   .stats-line {
+    height: 35px;
+    position: relative;
     $transition-time: .3s;
     .list-complete-enter-active {
       z-index: 1;
@@ -48,9 +50,14 @@ export default {
     }
 
     .stats-line-wrap {
+      padding-left: 5px;
       display: flex;
       overflow: hidden;
-      max-width: calc(500px + 40px);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      //max-width: calc(500px + 40px);
 
       .stats-line-item {
         will-change: transform;
@@ -60,14 +67,18 @@ export default {
         display: flex;
         justify-content: space-between;
         margin: 0 4px;
-        height: 30px;
+        height: 35px;
         min-width: 98px;
-        background-color: rgba(20, 217, 249, 1);
-        border: 1px solid #42b983;
-        border-radius: 4px;
+        background: #222646;
+        border-radius: 6px;
 
         > div {
           display: flex;
+          align-items: center;
+
+          img {
+            display: flex;
+          }
         }
 
         &:first-of-type {
@@ -78,6 +89,24 @@ export default {
           //margin-right: 0;
         }
       }
+    }
+
+    &:before, &:after {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 20px;
+      content: ' ';
+      pointer-events: none;
+    }
+    &:before {
+      left: 0;
+      box-shadow: inset 10px 0 4px -3px #131525;
+      z-index: 10;
+    }
+    &:after {
+      right: 0;
+      box-shadow: inset -10px 0 4px -3px #131525;
     }
   }
 </style>

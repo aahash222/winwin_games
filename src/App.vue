@@ -31,13 +31,14 @@ export default {
       language: null,
       returnUrl: null,
       depositUrl: null,
+      firstLoad: true,
     }
   },
   computed: {
     sessionSocket: function() {
       return this.$store.getters.subscribeSocketSession
     },
-    connectSocket: function() {
+    connectedSocket: function() {
       return this.$store.getters.getSocketConnected
     },
     closedSocket: function() {
@@ -50,7 +51,7 @@ export default {
 
 
     },
-    connectSocket: function(value) {
+    connectedSocket: function(value) {
       if (value === true) {
         this.$store.dispatch('sendSocketSession', this.session)
       } else {
@@ -61,6 +62,10 @@ export default {
       if (value === true) {
         this.errorMessage = 'Connection closed by server'
       }
+    },
+    $route: function(value) {
+      if (this.firstLoad) return
+      this.changeGame(value)
     }
   },
   created () {
@@ -75,15 +80,23 @@ export default {
     this.checkRouteData()
     if (this.errorMessage !== null) return
 
-    console.log('ok')
-
     this.mainLoader = false
 
     setTimeout(() => {
+      this.$store.commit('socketSetAddress', this.$route.name)
       this.$store.dispatch('socketConnect')
+      this.firstLoad = false
     }, 1)
   },
   methods: {
+    changeGame: function(data) {
+      console.log('Change game to ', this.$route.name)
+
+      this.$store.dispatch('socketDisconnect').then(() => {
+        this.$store.commit('socketSetAddress', this.$route.name)
+        this.$store.dispatch('socketConnect')
+      })
+    },
     findGetParameter: function(parameterName) {
       let result = null
       let tmp = []
@@ -127,10 +140,11 @@ export default {
       if (value.status === 'error') {
         this.errorMessage = value.message
       } else {
-
         this.$store.commit('setGameDecimal', value.data.decimal)
         this.$store.commit('setUserBalance', value.data.balance)
         this.$store.commit('setUserCurrency', value.data.currency)
+
+        this.$store.commit('socketSetAuth')
       }
       this.mainLoader = false
     }
@@ -139,6 +153,26 @@ export default {
 </script>
 <style lang="scss" src="@/assets/styles/bet-block.scss" />
 <style lang="scss">
+  //@import url('https://fonts.cdnfonts.com/css/bahnschrift');
+
+  @font-face {
+    font-family: 'GolosUIWebBold';
+    src:
+      url('/static/fonts/Golos-UI_Bold.woff2') format('woff2'),
+      url('/static/fonts/Golos-UI_Bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Muller';
+    src: local('Muller Bold'), local('Muller-Bold'),
+    url('/static/fonts/MullerBold.woff2') format('woff2'),
+    url('/static/fonts/MullerBold.woff') format('woff'),
+    url('/static/fonts/MullerBold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+  }
+
   html, body {
     padding: 0;
     margin: 0;
@@ -146,20 +180,36 @@ export default {
     height: 100vh;
   }
   #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #FFF;
-    background-color: #0d0e19;
+    background-color: #131525;
     height: 100%;
+
+    display: flex;
+    flex-direction: column;
   }
 
+  #app, input, button {
+    font-family: 'GolosUIWebBold', 'Roboto', Arial, sans-serif;
+    font-weight: 600;
+  }
+  button, a {
+    transition: .3s ease;
+  }
+  button {
+    outline: none;
+    border: 0;
+  }
   .game-layout {
-    margin: 40px 10% 0 10%;
-    background-color: #0c0e1c;
-    border: 1px solid #3e447c;
-    border-radius: 8px;
+    //margin: 40px 10% 0 10%;
+    //background-color: #080911;
+    //border: 1px solid #1A1D33;
+    //border-radius: 8px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   .error-wrap {

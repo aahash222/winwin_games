@@ -12,7 +12,7 @@ const app = createApp(App)
 app.use(store)
 app.use(router)
 app.use(VueAxios, axios)
-app.use(VueNativeSock, process.env.VUE_APP_WS, {
+app.use(VueNativeSock, 'wss://127.0.0.1', {
   store: store,
   format: 'json',
   connectManually: true,

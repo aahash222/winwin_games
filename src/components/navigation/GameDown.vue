@@ -1,8 +1,14 @@
 <template>
   <div class="menu-game-down">
-    <div>Ping {{$store.getters.getSocketPing}}ms</div>
-    <div><Stats /></div>
-    <div>{{ $route.name }}</div>
+    <div class="menu-game-left ping-menu">
+      <div><img class="ping-image" src="@/assets/games/ping.svg" alt="" /></div>
+      <div class="ping-text">
+        <div>ping</div>
+        <div>{{$store.getters.getSocketPing}}ms</div>
+      </div>
+    </div>
+    <div class="menu-game-stats"><Stats /></div>
+    <div class="menu-game-right">{{ $route.name }}</div>
   </div>
 </template>
 
@@ -25,7 +31,40 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px 15px;
+    padding: 5px 0;
 
+    .menu-game-left {
+      //padding-left: 15px;
+    }
+    .menu-game-stats {
+      flex: 1;
+    }
+    .menu-game-right {
+      min-width: 300px;
+      //margin-right: 15px;
+    }
+
+    .ping-menu {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 5px;
+      .ping-image {
+        display: flex;
+        width: 24px;
+        padding: 5px;
+      }
+      .ping-text {
+        font-size: 11px;
+        text-align: left;
+
+        > div:first-of-type {
+          line-height: 10px;
+          text-transform: uppercase;
+          color: #3E447C;
+        }
+
+      }
+    }
   }
 </style>

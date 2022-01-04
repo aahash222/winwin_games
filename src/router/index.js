@@ -17,6 +17,16 @@ const routes = [
     name: 'Mines',
     component: () => import('../components/games/mines/Mines')
   },
+  {
+    path: '/plinko',
+    name: 'Plinko',
+    component: () => import('../components/games/plinko/Plinko')
+  },
+  {
+    path: '/tower',
+    name: 'Tower',
+    component: () => import('../components/games/tower/Tower')
+  },
 ]
 
 const router = createRouter({

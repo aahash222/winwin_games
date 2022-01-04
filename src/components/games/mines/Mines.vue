@@ -10,7 +10,7 @@
       <div class="mines-game-field" :class="{ active: active, ended: ended }">
 
         <div v-for="row in 5" :key="row" class="mines-game-row">
-          <div v-for="line in 5" :key="line" class="mines-game-item" @click="selectField(((row - 1) * 5 + line) - 1)">
+          <div v-for="line in 5" :key="line" class="mines-game-item" @click="sendSelect(((row - 1) * 5 + line) - 1)">
             {{ fields[((row - 1) * 5 + line) - 1] }}
           </div>
         </div>
@@ -25,8 +25,8 @@
       :mines="mines"
       @changeBet="changeBet"
       @changeMines="changeMines"
-      @start="startGame"
-      @cashout="cashout"
+      @sendBet="sendBet"
+      @sendCashout="sendCashout"
     />
   </div>
 </template>
@@ -57,18 +57,16 @@ export default {
     }
   },
   created () {
-    this.$store.commit('subscribeSocketMinesGet')
+    this.$store.commit('subscribeSocketMines')
     this.$store.commit('subscribeSocketMinesBet')
     this.$store.commit('subscribeSocketMinesSelect')
     this.$store.commit('subscribeSocketMinesCashout')
 
     this.clientSeed = this.getRandomString(32)
-
-    this.$store.dispatch('sendSocketMinesGet')
   },
   computed: {
-    socketMinesGet() {
-      return this.$store.getters.subscribeSocketMinesGet
+    socketMines() {
+      return this.$store.getters.subscribeSocketMines
     },
     socketMinesBet() {
       return this.$store.getters.subscribeSocketMinesBet
@@ -95,9 +93,9 @@ export default {
     }
   },
   watch: {
-    socketMinesGet: function(value) {
+    socketMines: function(value) {
       if (value === null) return
-      this.receiveMinesGet(value)
+      this.receiveMines(value)
     },
     socketMinesBet: function(value) {
       if (value === null) return
@@ -114,13 +112,13 @@ export default {
   },
 
   methods: {
-    changeBet: function (value) {
-      this.bet = value
-    },
-    changeMines: function (value) {
-      this.mines = value
-    },
-    startGame: function () {
+
+
+
+    sendBet: function () {
+      if (this.loader || this.active) return
+
+      this.loader = true
       this.$store.dispatch('sendSocketMinesBet', {
         bet: this.bet,
         mines: this.mines,
@@ -129,27 +127,29 @@ export default {
 
       this.clientSeed = this.getRandomString(32)
     },
-    selectField: function (index) {
+    sendSelect: function (index) {
       if (this.active !== true) return
       console.log('select ', index)
 
       this.$store.dispatch('sendSocketMinesSelect', { position: index })
     },
-    cashout: function () {
+    sendCashout: function () {
+      this.loader = true
       this.$store.dispatch('sendSocketMinesCashout', null)
     },
 
-    receiveMinesGet: function (data) {
+
+    receiveMines: function (data) {
       if (data.status === 'success') {
-        if (data.data !== undefined) {
+        this.rtp = data.data.rtp
 
-          this.rtp = data.data.rtp
+        if (data.data.fields !== undefined) {
 
-          if (data.data.data.select !== undefined) {
-            for (let i = 0; i < data.data.data.select.length; i++) {
-              this.fields[data.data.data.select[i]] = 1
+          if (data.data.fields.select !== undefined) {
+            for (let i = 0; i < data.data.fields.select.length; i++) {
+              this.fields[data.data.fields.select[i]] = 1
             }
-            this.open = data.data.data.select.length
+            this.open = data.data.fields.select.length
             this.active = true
           }
         }
@@ -158,7 +158,7 @@ export default {
       }
     },
     receiveMinesBet: function (data) {
-      console.log('mines ', data)
+      console.log('mines bet ', data)
 
       if (data.status === 'success') {
         for (let i = 0; i < this.fields.length; i++) {
@@ -170,6 +170,7 @@ export default {
         this.open = 0
         this.active = true
       }
+      this.loader = false
     },
     receiveMinesSelect: function (data) {
       console.log('mines select', data)
@@ -177,57 +178,75 @@ export default {
       if (data.status === 'success') {
         this.open++
 
-        for (let i = 0; i < data.data.select.length; i++) {
-          this.fields[data.data.select[i]] = 1
-        }
-        // игра завершена, открываем бомбы
-        if (data.data.result !== undefined) {
-          for (let i = 0; i < data.data.result.length; i++) {
-            if (this.fields[data.data.result[i]] === 0) {
-              this.fields[data.data.result[i]] = 2
-            } else {
-              this.fields[data.data.result[i]] = 3
-            }
-          }
+        const isEnd = this.openFields(data.data.fields)
 
+        // игра завершена, открываем бомбы
+        if (isEnd) {
           this.active = false
           this.ended = true
+        }
+
+        // если открыты все кристаллы, то выдаем приз
+        if (data.data.game !== undefined) {
+          this.$store.commit('setUserBalance', data.data.game.balance)
         }
       }
     },
     receiveMinesCashout: function (data) {
       console.log('mines cashout', data)
 
-      //console.log(this.getMinesPayout(1, 19, this.rtp))
-
       if (data.status === 'success') {
-        this.$store.commit('setUserBalance', data.data.balance)
+        this.openFields(data.data.fields)
+
+        this.$store.commit('setUserBalance', data.data.game.balance)
 
         this.active = false
         this.ended = true
       }
+
+      this.loader = false
+    },
+    changeBet: function (value) {
+      this.bet = value
+    },
+    changeMines: function (value) {
+      this.mines = value
+    },
+    openFields: function(fields) {
+      for (let i = 0; i < fields.select.length; i++) {
+        if (fields.result !== undefined && fields.result.includes(fields.select[i])) {
+          this.fields[fields.select[i]] = 3
+        } else {
+          this.fields[fields.select[i]] = 1
+        }
+      }
+
+      if (fields.result !== undefined) {
+        for (let i = 0; i < fields.result.length; i++) {
+          if (this.fields[fields.result[i]] === 0) {
+            this.fields[fields.result[i]] = 2
+          }
+        }
+
+        return true
+      }
+
+      return false
     },
     getMinesPayout: function(mines, diamonds, rtp) {
       function factorial(number) {
         let value = number
-        for (let i = number; i > 1; i--) {
-          value *= i - 1
-        }
+        for (let i = number; i > 1; i--) value *= i - 1
         return value
       }
       function combination(x, d) {
         if (x === d) return 1
-        return factorial(x) / (factorial(d) * factorial(x - d))
+        return factorial(x) / factorial(d) / factorial(x - d)
       }
 
-      const n = 25
-      const x = 25 - mines
-
-      const first = combination(n, diamonds)
-      const second = combination(x, diamonds)
-      const result = rtp / 100 * (first / second)
-      return Math.round(result * 100) / 100
-    }
+      const result = rtp / 100 * (combination(25, diamonds) / combination(25 - mines, diamonds))
+      return Math.floor(result * 100) / 100
+    },
   }
 }
 </script>

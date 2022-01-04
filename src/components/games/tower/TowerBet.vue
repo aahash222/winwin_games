@@ -1,30 +1,29 @@
 <template>
   <div class="bet-block">
-
     <div>Bet: <input v-model="betAmount"></div>
 
     <div>Mines:
-      <select v-model="minesCount">
-        <option v-for="i in 24" :key="i" :value="i">{{ i }}</option>
+      <select v-model="selectConfig">
+        <option v-for="(item, key) in config" :key="key" :value="item.name">{{ item.name }}</option>
       </select>
     </div>
 
-    {{loader}}
-    <div v-if="!active"><button @click="start" :disabled="loader">ROLL</button></div>
+    <div v-if="!active"><button @click="sendBet" :disabled="loader">ROLL</button></div>
 
-    <div v-if="active"><button @click="cashout" :disabled="loader || open === 0">CASHOUT</button></div>
+    <div v-if="active"><button @click="sendCashout" :disabled="loader || open === 0">CASHOUT</button></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'MinesBet',
+  name: 'TowerBet',
   props: {
+    config: { type: Object },
     loader: { type: Boolean },
     active: { type: Boolean },
     open: { type: Number },
     bet: { type: Number },
-    mines: { type: Number }
+    select: { type: String },
   },
   data() {
     return {
@@ -40,21 +39,20 @@ export default {
         this.$emit('changeBet', parseFloat(value))
       }
     },
-    minesCount: {
+    selectConfig: {
       get: function() {
-        return this.mines
+        return this.select
       },
       set: function(value) {
-        this.$emit('changeMines', parseFloat(value))
+        this.$emit('changeSelect', value)
       }
     }
   },
   methods: {
-    start: function() {
-      console.log('click bet')
+    sendBet: function() {
       this.$emit('sendBet')
     },
-    cashout: function() {
+    sendCashout: function() {
       this.$emit('sendCashout')
     }
   }
