@@ -6,6 +6,7 @@
   // border-bottom-right-radius: 8px;
   border-top-right-radius: 8px;
 
+
   display: flex;
   flex-direction: column;
 
@@ -49,13 +50,14 @@
   }
 
   .bet-input-group,
-  .bet-input {
+  .block-input {
     margin-top: 10px;
+    position: relative;
   }
 
   .bet-input-group {
     display: flex;
-    .bet-input {
+    .block-input {
       margin-right: 10px;
       &:last-of-type {
         margin-right: 0;
@@ -63,81 +65,6 @@
     }
   }
 
-  .bet-input {
-    > label {
-      display: flex;
-      width: 100%;
-      padding: 5px 5px;
-    }
-    .bet-input-block {
-      background-color: #080911;
-      padding: 10px 12px;
-      border-radius: 6px;
-
-      > input {
-        background: none;
-        outline: 0;
-        border: 0;
-        color: #FFF;
-        width: 100%;
-        font-size: 18px;
-      }
-    }
-
-    .bet-input-buttons {
-      display: flex;
-
-      > button {
-        cursor: pointer;
-        flex: 1;
-        background-color: #222646;
-        color: #6871C1;
-        border-radius: 6px;
-        margin: 5px;
-        padding: 5px 0;
-
-        &:hover {
-          color: #FFF;
-          background-color: #6871C1;
-        }
-        &:first-of-type {
-          margin-left: 0;
-        }
-        &:last-of-type {
-          margin-right: 0;
-        }
-      }
-    }
-
-    &.bet-switch {
-      .bet-switch-block {
-        display: flex;
-        background-color: #080911;
-        border-radius: 6px;
-        height: 40px;
-        //margin-top: 4px;
-        > button {
-          cursor: pointer;
-          flex: 1;
-          height: 44px;
-          border-radius: 6px;
-          font-size: 18px;
-          background: none;
-          color: #6871C1;
-          margin-top: -2px;
-
-          &.active {
-            background: #222646;
-            color: #FFF;
-
-          }
-          &:hover {
-            color: #FFF;
-          }
-        }
-      }
-    }
-  }
 
   .bet-button {
     flex: 1;
@@ -148,8 +75,16 @@
       height: 40px;
       border-radius: 8px;
       color: #FFF;
-      background: linear-gradient(180deg, #4457FF 0%, #3C4DE1 100%);
+      //background: #4457FF linear-gradient(180deg, #4457FF 0%, #3C4DE1 100%);
+      background: #4457FF;
+      font-size: 24px;
+      &:hover {
+        //font-size: 25px;
+        background: #5165ff;
+        transform: scale(1.02);
+      }
     }
   }
+
 
 }

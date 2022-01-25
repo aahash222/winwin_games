@@ -25,8 +25,10 @@ const moduleSocket = {
 
       subscribes: {
         session: null,
+        server_seed_next: null,
 
         dice: null,
+        dice_bet: null,
 
         mines: null,
         mines_bet: null,
@@ -46,8 +48,10 @@ const moduleSocket = {
     getSocketPing: state => state.socket.socketPing,
 
     subscribeSocketSession: state => state.socket.subscribes.session,
+    subscribeSocketServerSeedNext: state => state.socket.subscribes.server_seed_next,
 
     subscribeSocketDice: state => state.socket.subscribes.dice,
+    subscribeSocketDiceBet: state => state.socket.subscribes.dice_bet,
 
     subscribeSocketMines: state => state.socket.subscribes.mines,
     subscribeSocketMinesBet: state => state.socket.subscribes.mines_bet,
@@ -61,7 +65,7 @@ const moduleSocket = {
   },
   actions: {
     socketConnect: (context) => {
-      console.log('connecting to socket by code')
+      console.log('connecting to socket by code: ', context.state.socket.address)
       main.config.globalProperties.$connect(context.state.socket.address)
     },
     socketDisconnect: (context) => {
@@ -72,9 +76,10 @@ const moduleSocket = {
       const data = { session: session, time: (new Date()).getTime() }
       context.commit('socketSend', { action: 'session', data: data })
     },
-    sendSocketDice: (context, data) => {
-      context.commit('socketSend', { action: 'dice', data: data })
-    },
+
+    sendSocketServerSeedNext: (context) => { context.commit('socketSend', { action: 'server_seed_next' }) },
+
+    sendSocketDiceBet: (context, data) => { context.commit('socketSend', { action: 'dice_bet', data: data }) },
 
     sendSocketMinesBet: (context, data) => { context.commit('socketSend', { action: 'mines_bet', data: data }) },
     sendSocketMinesSelect: (context, data) => { context.commit('socketSend', { action: 'mines_select', data: data }) },
@@ -116,6 +121,7 @@ const moduleSocket = {
           state.socket.address = process.env.VUE_APP_WS_TOWER
           break
       }
+      console.log('set socket address: ', game, state.socket.address)
     },
     socketSetPing: (state, value) => {
       state.socket.socketPing = (new Date().getTime()) - value
@@ -133,7 +139,10 @@ const moduleSocket = {
     socketSetAuth: state => { state.socket.isAuthSocket = true },
 
     subscribeSocketSession: state => { state.socket.subscribes.session = null },
+    subscribeSocketServerSeedNext: state => { state.socket.subscribes.server_seed_next = null },
+
     subscribeSocketDice: state => { state.socket.subscribes.dice = null },
+    subscribeSocketDiceBet: state => { state.socket.subscribes.dice_bet = null },
 
     subscribeSocketMines: state => { state.socket.subscribes.mines = null },
     subscribeSocketMinesBet: state => { state.socket.subscribes.mines_bet = null },
@@ -146,7 +155,10 @@ const moduleSocket = {
     subscribeSocketTowerCashout: state => { state.socket.subscribes.tower_cashout = null },
 
     SOCKET_session (state, data) { state.socket.subscribes.session = data },
+    SOCKET_server_seed_next (state, data) { state.socket.subscribes.server_seed_next = data },
+
     SOCKET_dice (state, data) { state.socket.subscribes.dice = data },
+    SOCKET_dice_bet (state, data) { state.socket.subscribes.dice_bet = data },
 
     SOCKET_mines (state, data) { state.socket.subscribes.mines = data },
     SOCKET_mines_bet (state, data) { state.socket.subscribes.mines_bet = data },

@@ -4,8 +4,8 @@
       <img src="@/assets/logo.svg" alt="winwin" />
     </div>
     <div class="nav-menu">
-      <router-link to="/">Crash</router-link>
-      <router-link to="/dice">Dice</router-link>
+      <router-link to="/"><img src="@/assets/games/game_crash.svg" alt="" />Crash</router-link>
+      <router-link to="/dice"><img src="@/assets/games/game_dice.svg" alt="" />Dice</router-link>
       <router-link to="/plinko">Plinko</router-link>
       <router-link to="/">Roulette</router-link>
       <router-link to="/tower">Tower</router-link>
@@ -16,16 +16,19 @@
       <router-link to="/">Keno</router-link>
     </div>
     <div class="nav-user">
-      <div class="nav-user-balance">{{userBalance}} {{userCurrency}}</div>
-      <div class="nav-user-deposit">123</div>
-      <div>ava</div>
+      <div class="nav-user-balance"><span>{{userBalance}}</span><Currency :symbol="userCurrency" :size="20" /></div>
+      <div class="nav-user-deposit"><img class="deposit-image" src="@/assets/games/icon_plus.svg" alt="" /><span>Deposit</span></div>
+      <div class="nav-user-avatar"><Avatar :avatar="$store.getters.getUserAvatar" /></div>
     </div>
   </div>
 </template>
 
 <script>
+import Avatar from '@/components/Avatar'
+import Currency from '@/components/Currency'
 export default {
   name: 'NavTop',
+  components: { Currency, Avatar },
   computed: {
     userBalance: function() {
       return this.$store.getters.getUserBalance
@@ -107,7 +110,7 @@ export default {
       margin-right: 10px;
       align-items: center;
       > div {
-        margin-left: 8px;
+        margin-left: 20px;
         &:first-of-type {
           margin-left: 0;
         }
@@ -117,18 +120,43 @@ export default {
         border: 1px solid #131525;
         border-radius: 8px;
 
-        padding: 6px 12px;
+        padding: 4px 12px;
 
-        font-size: 16px;
         color: #FFD05B;
+
+        display: flex;
+        align-items: center;
+        > span {
+          margin-right: 8px;
+          font-size: 20px;
+        }
       }
       .nav-user-deposit {
         background-color: #4457FF;
-        border: 1px solid #4456FE;
+        //border: 1px solid #4456FE;
         border-radius: 8px;
 
-        padding: 6px 12px;
+        padding: 5px 12px;
+        display: flex;
+        justify-content: center;
 
+        transition: .3s ease;
+        cursor: pointer;
+
+        .deposit-image {
+          display: flex;
+          margin-right: 3px;
+        }
+        > span {
+          margin: auto 0;
+        }
+
+        &:hover {
+          background: #5165ff;
+        }
+      }
+      .nav-user-avatar {
+        height: 40px;
       }
     }
   }

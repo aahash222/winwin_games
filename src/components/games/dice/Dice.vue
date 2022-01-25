@@ -32,13 +32,14 @@
         </div>
 
         <div></div>
-
+        {{ clientSeed }}
       </div>
 
       <DiceBet
         :bet="bet"
         :position="selectPosition"
         :mode="mode"
+        :errors="errors"
         @changeBet="changeBet"
         @changeMode="changeMode"
         @sendBet="sendBet"
@@ -65,10 +66,12 @@ export default {
       bet: 0.1,
       mode: 0,
       result: -1,
-      clientSeed: null,
+      //clientSeed: null,
       lastBets: [],
       resultPrint: [0, 0, 0, 0],
-      animationRoll: null
+      animationRoll: null,
+
+      errors: {}
     }
   },
   computed: {
@@ -80,29 +83,27 @@ export default {
         this.mode = value === true ? 1 : 0
       }
     },
-    /*
-    resultPrint: function() {
-      if (this.result === -1) return [0, 0, 0, 0]
-
-      const one = Math.floor(this.result / 1000)
-      const two = Math.floor((this.result - one * 1000) / 100)
-      const three = Math.floor((this.result - (one * 1000) - (two * 100)) / 10)
-      const four = this.result - (one * 1000) - (two * 100) - (three * 10)
-
-      return [one, two, three, four]
+    clientSeed: function() {
+      return this.$store.getters.getClientSeed
     },
-     */
-
     socketDice: function() {
       return this.$store.getters.subscribeSocketDice
+    },
+    socketDiceBet: function() {
+      return this.$store.getters.subscribeSocketDiceBet
     }
   },
   watch: {
     socketDice: function(data) {
       if (data === null) return
 
+      this.receiveDiceAnswer(data)
+    },
+    socketDiceBet: function(data) {
+      if (data === null) return
+
       this.receiveBetAnswer(data)
-      this.$store.commit('subscribeSocketDice')
+      this.$store.commit('subscribeSocketDiceBet')
     }
   },
   mounted () {
@@ -113,7 +114,7 @@ export default {
   },
   created () {
     this.$store.commit('subscribeSocketDice')
-    this.clientSeed = this.getRandomString(32)
+    //this.clientSeed = this.getRandomString(32)
   },
 
 
@@ -130,10 +131,23 @@ export default {
       this.mode = value
     },
     sendBet: function() {
+      this.errors = {}
       this.startAnimationRoll()
-      this.$store.dispatch('sendSocketDice', { position: this.selectPosition, mode: this.mode, bet: this.bet, client_seed: this.clientSeed })
+      this.$store.dispatch('sendSocketDiceBet', { position: this.selectPosition, mode: this.mode, bet: this.bet, client_seed: this.clientSeed })
 
-      this.clientSeed = this.getRandomString(32)
+      //this.clientSeed = this.getRandomString(32)
+      this.$store.dispatch('setClientSeedAfterBet')
+    },
+    receiveDiceAnswer: function(answer) {
+      console.log('socket dice answer')
+      console.log(answer)
+
+      if (answer.status === 'success') {
+
+        this.$store.commit('setServerSeedHash', answer.data.server_seed_hash)
+      } else if (answer.status === 'error') {
+        this.$store.dispatch('notification', { type: 'error', text: answer.message, isClose: false, timer: 2000 }).then()
+      }
     },
     receiveBetAnswer: function(answer) {
       console.log('receive ', answer)
@@ -144,14 +158,19 @@ export default {
         this.result = answer.data.data.result
         this.resultPrint = this.printResult(this.result)
         this.$store.commit('setUserBalance', answer.data.balance)
+        this.$store.commit('setServerSeedHash', answer.data.server_seed_hash)
 
-        this.addNewLastBet(answer.data.data)
+        this.addNewLastBet(answer.data.uuid, answer.data.data)
+      } else if (answer.status === 'error') {
+        if (answer.type !== undefined) {
+          this.errors[answer.type] = answer.message
+        } else {
+          this.$store.dispatch('notification', { type: 'error', text: answer.message, isClose: false, timer: 2000 }).then()
+        }
       }
     },
-    addNewLastBet: function(value) {
-      console.log(value)
-
-      value.uuid = Date.now()
+    addNewLastBet: function(uuid, value) {
+      value.uuid = uuid
       this.lastBets.push(value)
       if (this.lastBets.length > 6) {
         this.lastBets.shift()

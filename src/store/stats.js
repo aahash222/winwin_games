@@ -1,7 +1,7 @@
 const moduleStats = {
   state: {
     stats: {
-      limit: 20,
+      limit: 10,
     }
   },
   getters: {

@@ -142,6 +142,7 @@ export default {
     receiveMines: function (data) {
       if (data.status === 'success') {
         this.rtp = data.data.rtp
+        this.$store.commit('setServerSeedHash', data.data.server_seed_hash)
 
         if (data.data.fields !== undefined) {
 
@@ -166,6 +167,7 @@ export default {
         }
 
         this.$store.commit('setUserBalance', data.data.balance)
+        this.$store.commit('setServerSeedHash', data.data.server_seed_hash)
 
         this.open = 0
         this.active = true

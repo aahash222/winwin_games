@@ -2,9 +2,22 @@
   <div class="stats">
 
     <div v-if="loader">loading...</div>
-    <div v-else>
+    <div v-else class="stats-wrap">
 
-      <StatsLine :transactions="transactions" />
+      <StatsLine
+        @click="openList = true"
+        :transactions="transactions"
+        class="stats-line-block"
+      />
+
+      <transition name="slide-fade">
+        <StatsList
+          id="statsList"
+          v-if="openList"
+          @closeList="openList = false"
+          :transactions="transactions"
+        />
+      </transition>
     </div>
 
   </div>
@@ -12,12 +25,14 @@
 
 <script>
 import StatsLine from '@/components/stats/StatsLine'
+import StatsList from '@/components/stats/StatsList'
 export default {
   name: 'Stats',
-  components: { StatsLine },
+  components: { StatsList, StatsLine },
   data () {
     return {
       loader: true,
+      openList: false,
       connection: null,
       transactions: [],
     }
@@ -26,6 +41,20 @@ export default {
     statsLimit: function() {
       return this.$store.getters.getStatsLimit
     }
+  },
+  watch: {
+    openList: function(value) {
+      if (value === true) {
+        setTimeout(() => {
+          window.addEventListener('click', this.statsListClick)
+        }, 10)
+      } else {
+        window.removeEventListener('click', this.statsListClick)
+      }
+    }
+  },
+  beforeUnmount () {
+    window.removeEventListener('click', this.statsListClick)
   },
   created () {
     this.connectStatsServer()
@@ -77,13 +106,21 @@ export default {
     },
     loadTransactions: function(value) {
       //console.log(value.length)
-      this.transactions = value
+      this.transactions = value.reverse()
+      console.log(this.transactions)
     },
     addLogTransaction: function(value) {
       if (this.transactions.length >= this.statsLimit) {
         this.transactions.pop()
       }
       this.transactions.unshift(value)
+      console.log(value)
+    },
+    statsListClick: function(e) {
+      const menu = document.getElementById('statsList')
+      if (menu.contains(e.target) === false) {
+        this.openList = false
+      }
     }
   }
 }
@@ -92,5 +129,27 @@ export default {
 <style lang="scss" scoped>
   .stats {
     //margin: 5px 0;
+
+    .slide-fade-enter-active {
+      transition: all 0.3s ease-out;
+    }
+
+    .slide-fade-leave-active {
+      transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+    }
+
+    .slide-fade-enter-from,
+    .slide-fade-leave-to {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+
+    .stats-wrap {
+      position: relative;
+
+      .stats-line-block {
+        cursor: pointer;
+      }
+    }
   }
 </style>

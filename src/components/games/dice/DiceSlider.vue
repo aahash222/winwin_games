@@ -1,5 +1,5 @@
 <template>
-  <div class="dice-slider">
+  <div class="dice-slider" :class="{ small: small }">
 
     <div class="dice-slider-up">
       <div>0</div>
@@ -35,7 +35,8 @@ export default {
   props: {
     startPosition: { type: Number },
     mode: { type: Number },
-    result: { type: Number }
+    result: { type: Number },
+    small: { type: Boolean, default: false }
   },
   data () {
     return {
@@ -49,7 +50,7 @@ export default {
   },
   computed: {
     sliderPosition: function() {
-      return this.sliderTick * this.position
+      return this.sliderTick * this.position - 5
     },
     sliderMinimum: function() {
       if (this.mode === 0) {
@@ -71,18 +72,18 @@ export default {
   },
   watch: {
     result: function(value) {
-      if (this.mode === 0 && value < this.position) {
-        this.resultLose = false
-      } else if (this.mode === 1 && value > this.position) {
-        this.resultLose = false
-      } else {
-        this.resultLose = true
-      }
+      this.computeResultLose(value)
+    },
+    startPosition: function(value) {
+      this.position = value
     }
   },
   mounted () {
     this.initSlider()
     this.position = this.startPosition
+    if (this.small) {
+      this.computeResultLose(this.result)
+    }
   },
   methods: {
     initSlider: function() {
@@ -90,12 +91,22 @@ export default {
       this.sliderWidth = slider.clientWidth
       this.sliderTick = (this.sliderWidth - this.sliderPointerSize) / 9999
     },
+    computeResultLose: function(value) {
+      if (this.mode === 0 && value < this.position) {
+        this.resultLose = false
+      } else if (this.mode === 1 && value > this.position) {
+        this.resultLose = false
+      } else {
+        this.resultLose = true
+      }
+    },
     setSliderPosition: function(value) {
       this.position = value
       this.$emit('position', value)
     },
     scrollSlider: function(type, event) {
       event.preventDefault()
+      if (this.small) return
 
       const elemId = event.target.id
 
@@ -167,8 +178,6 @@ export default {
     max-width: 600px;
     margin-bottom: 20px;
 
-
-
     .dice-slider-up {
       display: flex;
       justify-content: space-between;
@@ -186,8 +195,6 @@ export default {
       padding: 3px;
       border: 2px solid #121426;
       border-radius: 14px;
-
-
 
       .slider {
         height: 10px;
@@ -276,6 +283,7 @@ export default {
           width: 20px;
           height: 20px;
           background-color: #212440;
+          //background-color: #222646;
           border-radius: 4px;
           display: flex;
           justify-content: center;
@@ -299,6 +307,7 @@ export default {
             width: 8px;
             height: 8px;
             background-color: #212440;
+            //background-color: #222646;
             border-radius: 2px;
 
             transform: rotate(45deg);
@@ -329,6 +338,40 @@ export default {
         height: 8px;
         width: 2px;
         background-color: #212440;
+      }
+    }
+
+    &.small {
+
+      .dice-slider-up {
+        margin-bottom: 0;
+      }
+      .dice-slider-wrap {
+        .slider {
+          animation: unset;
+          height: 8px;
+          &.mode, .slider-mode {
+            animation: unset;
+          }
+          .slider-mode {
+            height: 8px;
+          }
+          .slider-point {
+            cursor: default;
+            top: -8px;
+            height: 20px;
+            width: 20px;
+            font-size: 8px;
+          }
+        }
+        .dice-slider-result {
+          margin-top: 10px;
+          transition: none;
+        }
+      }
+
+      .dice-slider-down {
+        display: none;
       }
     }
   }

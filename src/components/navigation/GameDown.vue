@@ -1,23 +1,62 @@
 <template>
   <div class="menu-game-down">
-    <div class="menu-game-left ping-menu">
-      <div><img class="ping-image" src="@/assets/games/ping.svg" alt="" /></div>
+    <div class="menu-game-left">
+      <div><img class="ping-image" src="@/assets/games/icon_ping.svg" alt="" /></div>
       <div class="ping-text">
         <div>ping</div>
-        <div>{{$store.getters.getSocketPing}}ms</div>
+        <div>{{ $store.getters.getSocketPing }}ms</div>
+      </div>
+
+      <div class="menu-my-bets">
+        <button @click="openHistory = true">My bets</button>
+        <transition name="slide-fade">
+          <StatsHistory id="statsHistory" v-if="openHistory" />
+        </transition>
       </div>
     </div>
-    <div class="menu-game-stats"><Stats /></div>
-    <div class="menu-game-right">{{ $route.name }}</div>
+    <div class="menu-game-stats">
+      <Stats />
+    </div>
+    <GameDownRight />
   </div>
 </template>
 
 <script>
 import Stats from '@/components/stats/Stats'
+import GameDownRight from '@/components/navigation/GameDownRight'
+import StatsHistory from '@/components/stats/StatsHistory'
 export default {
   name: 'GameDown',
-  components: { Stats },
-  props: ['game']
+  components: { StatsHistory, GameDownRight, Stats },
+  props: ['game'],
+  data() {
+    return {
+      openHistory: false,
+    }
+  },
+  watch: {
+    openHistory: function(value) {
+      if (value === true) {
+        setTimeout(() => {
+          window.addEventListener('click', this.statsHistoryClick)
+        }, 10)
+      } else {
+        window.removeEventListener('click', this.statsHistoryClick)
+      }
+    }
+  },
+  beforeUnmount () {
+    window.removeEventListener('click', this.statsHistoryClick)
+  },
+  methods: {
+    statsHistoryClick: function(e) {
+      const menu = document.getElementById('statsHistory')
+      if (menu.contains(e.target) === false) {
+        this.openHistory = false
+      }
+    }
+  }
+
 }
 </script>
 
@@ -33,18 +72,11 @@ export default {
     align-items: center;
     padding: 5px 0;
 
-    .menu-game-left {
-      //padding-left: 15px;
-    }
     .menu-game-stats {
       flex: 1;
     }
-    .menu-game-right {
-      min-width: 300px;
-      //margin-right: 15px;
-    }
 
-    .ping-menu {
+    .menu-game-left {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -64,6 +96,35 @@ export default {
           color: #3E447C;
         }
 
+      }
+
+      .menu-my-bets {
+        margin-left: 10px;
+        position: relative;
+        > button {
+          border-radius: 6px;
+          background-color: #222646;
+          color: #6871C1;
+          height: 35px;
+          padding: 0 15px;
+          &:hover {
+            color: #FFF;
+          }
+        }
+
+        .slide-fade-enter-active {
+          transition: all 0.3s ease-out;
+        }
+
+        .slide-fade-leave-active {
+          transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+        }
+
+        .slide-fade-enter-from,
+        .slide-fade-leave-to {
+          transform: translateY(100%);
+          opacity: 0;
+        }
       }
     }
   }

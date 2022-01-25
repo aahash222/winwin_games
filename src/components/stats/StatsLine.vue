@@ -1,14 +1,16 @@
 <template>
-  <div class="stats-line">
+  <div class="stats-line" v-if="transactions.length > 0">
     <transition-group name="list-complete" class="stats-line-wrap" tag="div">
-      <div v-for="(item, key) in transactions" :key="item.uuid" class="stats-line-item">
+      <div v-for="item in transactions" :key="item.uuid" class="stats-line-item">
         <div>
-          <div class="stats-line-avatar">{{key}}</div>
-          <div class="stats-line-name">n</div>
+          <div class="stats-line-avatar">
+            <Avatar :avatar="item.user.avatar !== undefined ? item.user.avatar : item.session" :size=20 />
+          </div>
+          <div class="stats-line-name">{{ printName(item.user.name) }}</div>
         </div>
         <div>
           <div class="stats-line-bet">{{ item.bet }}</div>
-          <div class="stats-line-currency"><img :src="require('@/assets/games/coin_' + item.currency + '.svg')" alt="" /></div>
+          <div class="stats-line-currency"><Currency :symbol="item.currency" :size="16" /></div>
         </div>
       </div>
     </transition-group>
@@ -16,9 +18,17 @@
 </template>
 
 <script>
+import Avatar from '@/components/Avatar'
+import Currency from '@/components/Currency'
 export default {
   name: 'StatsLine',
+  components: { Currency, Avatar },
   props: ['transactions'],
+  methods: {
+    printName: function(name) {
+      return name
+    }
+  }
 }
 </script>
 
@@ -31,18 +41,17 @@ export default {
       z-index: 1;
     }
     .list-complete-enter-to {
-      margin-left: -108px !important;
-      margin-right: 116px !important;
-      transform: translateX(112px);
+      margin-left: -154px !important;
+      margin-right: 162px !important;
+      transform: translateX(158px);
       transition: transform $transition-time linear !important;
     }
     .list-complete-enter-active {
       //transform: translateX(100px);
     }
-    .list-complete-leave-to
-    {
+    .list-complete-leave-to {
       opacity: 0;
-      transform: translateX(100px);
+      transform: translateX(146px);
     }
     .list-complete-leave-active {
       position: relative;
@@ -67,8 +76,9 @@ export default {
         display: flex;
         justify-content: space-between;
         margin: 0 4px;
+        padding: 0 5px;
         height: 35px;
-        min-width: 98px;
+        min-width: 144px;
         background: #222646;
         border-radius: 6px;
 
@@ -78,6 +88,18 @@ export default {
 
           img {
             display: flex;
+          }
+
+          .stats-line-avatar {
+            margin-right: 3px;
+          }
+          .stats-line-name {
+            font-size: 14px;
+          }
+          .stats-line-currency {
+            margin-left: 3px;
+            display: flex;
+            align-items: center;
           }
         }
 

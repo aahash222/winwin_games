@@ -142,7 +142,7 @@ export default {
       if (data.status === 'success') {
         this.rtp = data.data.rtp
         this.config = data.data.config
-
+        this.$store.commit('setServerSeedHash', data.data.server_seed_hash)
       }
       this.loader = false
       this.loadConfig = true
@@ -153,6 +153,7 @@ export default {
         this.createFields()
 
         this.$store.commit('setUserBalance', data.data.balance)
+        this.$store.commit('setServerSeedHash', data.data.server_seed_hash)
 
         this.open = 0
         this.active = true
