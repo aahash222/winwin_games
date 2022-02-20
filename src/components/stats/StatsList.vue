@@ -14,9 +14,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, key) in transactions" :key="item.uuid" :class="((countLog+key) % 2 === 0) ? '' : 'odd'">
+          <tr v-for="(item, key) in transactions" :key="item.uuid" :class="{ odd: ((countLog+key) % 2 !== 0)}">
             <td>
-              <div @click="openBet(item.uuid)">{{ gameNames[item.game] }}</div>
+              <div @click="openBet(item.uuid)" class="game">
+                <span class="game-image">
+                  <GameIcon :game="item.game" :size="18" fill="FFF" />
+                </span>
+                <span class="game-name">{{ gameNames[item.game] }}</span>
+              </div>
             </td>
             <td>
               <div @click="openBet(item.uuid)" class="stats-list-user">
@@ -40,7 +45,7 @@
     </div>
 
     <div class="stats-close">
-      <button @click="closeModal()"><div>Close all stats</div><div><img class="bet-info-verify-arrow" src="@/assets/games/icon_arrow_down.svg" alt="" /></div></button>
+      <button @click="closeModal()"><div>Close all stats</div><div><img class="bet-info-verify-arrow" src="@/assets/icons/icon_arrow_down.svg" alt="" /></div></button>
     </div>
 
   </div>
@@ -49,16 +54,19 @@
 <script>
 import Avatar from '@/components/Avatar'
 import Currency from '@/components/Currency'
+import GameIcon from '@/components/navigation/icons/GameIcon'
 export default {
   name: 'StatsList',
-  components: { Currency, Avatar },
-  props: ['transactions'],
+  components: { GameIcon, Currency, Avatar },
   data() {
     return {
       countLog: 0,
     }
   },
   computed: {
+    transactions: function() {
+      return this.$store.getters.getStatsTransactions
+    },
     gameNames: function() {
       return this.$store.getters.getGameNames
     }
@@ -70,10 +78,10 @@ export default {
   },
   methods: {
     closeModal: function() {
-      this.$emit('closeList')
+      this.$emit('close')
     },
     openBet: function(uuid) {
-      this.$emit('closeList')
+      this.$emit('close')
       this.$store.commit('openModalBet', uuid)
     }
   }
@@ -153,6 +161,16 @@ export default {
                 > div {
                   border-top-right-radius: 6px;
                   border-bottom-right-radius: 6px;
+                }
+              }
+
+              .game {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                .game-image  {
+                  display: inline-flex;
+                  align-items: center;
                 }
               }
             }

@@ -154,11 +154,10 @@ export default {
         })
     },
     receiveSession: function(value) {
-      console.log('socket session: ', value)
-
       if (value.status === 'error') {
         this.errorMessage = value.message
       } else {
+        this.$store.commit('setSession', this.session)
         this.$store.commit('setGameDecimal', value.data.decimal)
         this.$store.commit('setUserBalance', value.data.balance)
         this.$store.commit('setUserCurrency', value.data.currency)

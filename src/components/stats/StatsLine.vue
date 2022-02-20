@@ -23,7 +23,11 @@ import Currency from '@/components/Currency'
 export default {
   name: 'StatsLine',
   components: { Currency, Avatar },
-  props: ['transactions'],
+  computed: {
+    transactions: function() {
+      return this.$store.getters.getStatsTransactions
+    }
+  },
   methods: {
     printName: function(name) {
       return name

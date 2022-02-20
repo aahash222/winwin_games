@@ -120,6 +120,9 @@ const moduleSocket = {
         case 'Tower':
           state.socket.address = process.env.VUE_APP_WS_TOWER
           break
+        case 'Wheel':
+          state.socket.address = process.env.VUE_APP_WS_WHEEL
+          break
       }
       console.log('set socket address: ', game, state.socket.address)
     },

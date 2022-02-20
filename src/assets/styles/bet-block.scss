@@ -53,6 +53,9 @@
   .block-input {
     margin-top: 10px;
     position: relative;
+    &:first-of-type {
+      margin-top: 0;
+    }
   }
 
   .bet-input-group {
@@ -69,7 +72,8 @@
   .bet-button {
     flex: 1;
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
+    justify-content: flex-end;
     > button {
       width: 100%;
       height: 40px;
@@ -80,8 +84,21 @@
       font-size: 24px;
       &:hover {
         //font-size: 25px;
-        background: #5165ff;
+        background-color: #5165ff;
         transform: scale(1.02);
+      }
+      &:disabled {
+        //color: #cbcbcb;
+        color: #606060;
+        cursor: not-allowed;
+        //background-color: #6974c9;
+        //background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.73' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+        background-color: #2f2f2f;
+        //pointer-events: none;
+
+        &:hover {
+          transform: unset;
+        }
       }
     }
   }

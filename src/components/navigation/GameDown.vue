@@ -1,7 +1,7 @@
 <template>
   <div class="menu-game-down">
     <div class="menu-game-left">
-      <div><img class="ping-image" src="@/assets/games/icon_ping.svg" alt="" /></div>
+      <div><img class="ping-image" src="@/assets/icons/icon_ping.svg" alt="" /></div>
       <div class="ping-text">
         <div>ping</div>
         <div>{{ $store.getters.getSocketPing }}ms</div>
@@ -10,7 +10,7 @@
       <div class="menu-my-bets">
         <button @click="openHistory = true">My bets</button>
         <transition name="slide-fade">
-          <StatsHistory id="statsHistory" v-if="openHistory" />
+          <StatsHistory id="statsHistory" v-if="openHistory" @close="closeHistory" />
         </transition>
       </div>
     </div>
@@ -49,6 +49,9 @@ export default {
     window.removeEventListener('click', this.statsHistoryClick)
   },
   methods: {
+    closeHistory: function() {
+      this.openHistory = false
+    },
     statsHistoryClick: function(e) {
       const menu = document.getElementById('statsHistory')
       if (menu.contains(e.target) === false) {

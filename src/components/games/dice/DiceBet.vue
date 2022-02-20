@@ -77,8 +77,11 @@
 <script>
 import Inputs from '../Inputs'
 import Currency from '@/components/Currency'
+import betBlock from '@/mixins/bet-block'
+
 export default {
   name: 'DiceBet',
+  mixins: [betBlock],
   components: { Currency },
   props: {
     locked: { type: Boolean },
@@ -100,8 +103,6 @@ export default {
       maximumPayout: 9900,
 
       minimumBet: 0.00000100,
-
-
     }
   },
   computed: {
@@ -159,19 +160,6 @@ export default {
     calculatePayout: function() {
       return Inputs.truncatedDown(99 / this.gameChance, 4)
     },
-
-    inputBet: function(e) {
-      if (this.locked) return
-
-      const bet = Inputs.keyBet(e, this.minimumBet, this.decimal)
-      if (bet.valid === false) return
-
-      let betAmount = bet.value
-      betAmount = Inputs.checkMin(betAmount, this.minimumBet)
-      betAmount = Inputs.checkMax(betAmount, this.$store.getters.getUserBalance)
-
-      this.betAmount = betAmount
-    },
     inputChance: function(e) {
       if (this.locked) return
 
@@ -215,20 +203,7 @@ export default {
 
       this.$emit('position', position)
     },
-    buttonBet: function(value) {
-      if (value === 'min') {
-        this.betAmount = this.minimumBet
-      }
-      if (value === 'max') {
-        this.betAmount = this.$store.getters.getUserBalance
-      }
-      if (value === '1/2') {
-        this.betAmount = this.betAmount / 2
-      }
-      if (value === 'x2') {
-        this.betAmount = this.betAmount * 2
-      }
-    },
+
     buttonChance: function(value) {
       if (this.locked) return
 

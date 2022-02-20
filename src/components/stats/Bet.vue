@@ -7,10 +7,13 @@
         <div><a @click="closeModal()">&#10006;</a></div>
       </div>
       <div class="bet-info-info" v-if="betData !== null">
-        <div class="bet-info-game">{{ gameNames[betData.game] }}</div>
+        <div class="bet-info-game">
+          <span><GameIcon :game="betData.game" :size="18" fill="6871C1" /></span>
+          <span>{{ gameNames[betData.game] }}</span>
+        </div>
         <div class="bet-info-user">
           <div><Avatar :avatar="betData.user.avatar !== undefined ? betData.user.avatar : betData.session" :size="20" /></div>
-          <div>user</div>
+          <div>{{betData.user}}</div>
         </div>
         <div class="bet-info-time">{{ printTimeFull(betData.time) }}</div>
       </div>
@@ -40,7 +43,7 @@
       <div class="bet-info-verify" v-if="betData !== null">
         <div class="bet-info-verify-open" @click="toggleVerification" :class="{ open: verification }">
           <div>Bet verification info</div>
-          <div><img class="bet-info-verify-arrow" src="@/assets/games/icon_arrow_down.svg" alt="" /></div>
+          <div><img class="bet-info-verify-arrow" src="@/assets/icons/icon_arrow_down.svg" alt="" /></div>
         </div>
 
         <transition name="fade">
@@ -51,7 +54,7 @@
               <label for="serverSeed">Server seed</label>
               <div class="bet-info-verify-input">
                 <input type="text" :value="betData.server_seed" id="serverSeed" onclick="this.select()" readonly>
-                <button class="tooltip" data-tooltip="Copied!" @click="copy($event, 'serverSeed')"><img src="@/assets/games/icon_copy.svg" alt="" /></button>
+                <button class="tooltip" data-tooltip="Copied!" @click="copy($event, 'serverSeed')"><img src="@/assets/icons/icon_copy.svg" alt="" /></button>
               </div>
             </div>
 
@@ -59,7 +62,7 @@
               <label for="serverSeedHashed">Server seed hashed</label>
               <div class="bet-info-verify-input">
                 <input type="text" :value="getHashed(betData.server_seed)" id="serverSeedHashed" onclick="this.select()" readonly>
-                <button class="tooltip" data-tooltip="Copied!" @click="copy($event, 'serverSeedHashed')"><img src="@/assets/games/icon_copy.svg" alt="" /></button>
+                <button class="tooltip" data-tooltip="Copied!" @click="copy($event, 'serverSeedHashed')"><img src="@/assets/icons/icon_copy.svg" alt="" /></button>
               </div>
             </div>
 
@@ -67,7 +70,7 @@
               <label for="clientSeed">Client seed</label>
               <div class="bet-info-verify-input">
                 <input type="text" :value="betData.client_seed" id="clientSeed" onclick="this.select()" readonly>
-                <button class="tooltip" data-tooltip="Copied!" @click="copy($event,'clientSeed')"><img src="@/assets/games/icon_copy.svg" alt="" /></button>
+                <button class="tooltip" data-tooltip="Copied!" @click="copy($event,'clientSeed')"><img src="@/assets/icons/icon_copy.svg" alt="" /></button>
               </div>
             </div>
 
@@ -87,9 +90,10 @@ import copy from '@/mixins/copy'
 import Avatar from '@/components/Avatar'
 import BetDice from '@/components/stats/Bet/BetDice'
 import Currency from '@/components/Currency'
+import GameIcon from '@/components/navigation/icons/GameIcon'
 export default {
   name: 'Bet',
-  components: { Currency, BetDice, Avatar },
+  components: { GameIcon, Currency, BetDice, Avatar },
   mixins: [times, copy],
   data() {
     return {
@@ -198,6 +202,12 @@ export default {
         }
         .bet-info-game {
           color: #6871C1;
+          display: flex;
+          align-items: center;
+          > span {
+            display: inline-flex;
+            align-items: center;
+          }
         }
         .bet-info-user {
           display: flex;

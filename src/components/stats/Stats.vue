@@ -6,7 +6,6 @@
 
       <StatsLine
         @click="openList = true"
-        :transactions="transactions"
         class="stats-line-block"
       />
 
@@ -14,8 +13,7 @@
         <StatsList
           id="statsList"
           v-if="openList"
-          @closeList="openList = false"
-          :transactions="transactions"
+          @close="openList = false"
         />
       </transition>
     </div>
@@ -34,12 +32,14 @@ export default {
       loader: true,
       openList: false,
       connection: null,
-      transactions: [],
     }
   },
   computed: {
     statsLimit: function() {
       return this.$store.getters.getStatsLimit
+    },
+    transaction: function() {
+      return this.$store.getters.getStatsTransactions
     }
   },
   watch: {
@@ -99,22 +99,15 @@ export default {
       this.connection.onerror = (event) => {
         console.error('Error connect to Stats server...', event)
       }
-
     },
     sendStatsPong: function() {
       this.connection.send(JSON.stringify({ action: 'pong' }))
     },
     loadTransactions: function(value) {
-      //console.log(value.length)
-      this.transactions = value.reverse()
-      console.log(this.transactions)
+      this.$store.dispatch('statsLoadTransactions', value.reverse())
     },
     addLogTransaction: function(value) {
-      if (this.transactions.length >= this.statsLimit) {
-        this.transactions.pop()
-      }
-      this.transactions.unshift(value)
-      console.log(value)
+      this.$store.dispatch('statsAddTransactions', value)
     },
     statsListClick: function(e) {
       const menu = document.getElementById('statsList')

@@ -8,7 +8,7 @@
       <div class="fair-menu-client">
         <div class="block-input block-switch" :class="{ error: clientSeedError}">
 
-          <label><img src="@/assets/games/icon_monitor.svg" alt="" />Client seed</label>
+          <label><img src="@/assets/icons/icon_monitor.svg" alt="" />Client seed</label>
 
           <div class="block-switch-block">
             <button @click.prevent="clientRandom = !clientRandom" :class="{ active: clientRandom }">RANDOM</button>
@@ -29,7 +29,7 @@
       <div class="fair-menu-server">
         <div class="block-input">
 
-          <label><img src="@/assets/games/icon_plug.svg" alt="" />Next server seed hashed</label>
+          <label><img src="@/assets/icons/icon_plug.svg" alt="" />Next server seed hashed</label>
           <div class="bet-input-block">
             <input type="text" :value="serverSeedHashedShow" readonly>
           </div>
@@ -191,7 +191,7 @@ export default {
     .fair-menu-text {
       color: #6871C1;
       margin: 10px 0;
-
+      font-size: 14px;
     }
 
     .fair-menu-data {

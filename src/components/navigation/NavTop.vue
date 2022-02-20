@@ -4,31 +4,94 @@
       <img src="@/assets/logo.svg" alt="winwin" />
     </div>
     <div class="nav-menu">
-      <router-link to="/"><img src="@/assets/games/game_crash.svg" alt="" />Crash</router-link>
-      <router-link to="/dice"><img src="@/assets/games/game_dice.svg" alt="" />Dice</router-link>
-      <router-link to="/plinko">Plinko</router-link>
-      <router-link to="/">Roulette</router-link>
-      <router-link to="/tower">Tower</router-link>
-      <router-link to="/">Wheel</router-link>
-      <router-link to="/">Slots</router-link>
-      <router-link to="/">HiLo</router-link>
-      <router-link to="/mines">Mines</router-link>
-      <router-link to="/">Keno</router-link>
+      <router-link to="/">
+        <span>
+          <IconCrash />
+        </span>
+        <span>Crash</span>
+      </router-link>
+      <router-link to="/dice">
+        <span>
+          <IconDice />
+        </span>
+        <span>Dice</span>
+      </router-link>
+      <router-link to="/plinko">
+        <span>
+          <IconPlinko />
+        </span>
+        <span>Plinko</span>
+      </router-link>
+      <router-link to="/">
+        <span>
+          <IconRoulette />
+        </span>
+        <span>Roulette</span>
+      </router-link>
+      <router-link to="/tower">
+        <span>
+          <IconTower />
+        </span>
+        <span>Tower</span>
+      </router-link>
+      <router-link to="/wheel">
+        <span>
+          <IconWheel />
+        </span>
+        <span>Wheel</span>
+      </router-link>
+      <router-link to="/">
+        <span>
+          <IconSlots />
+        </span>
+        <span>Slots</span>
+      </router-link>
+      <router-link to="/">
+        <span>
+          <IconHilo />
+        </span>
+        <span>HiLo</span>
+      </router-link>
+      <router-link to="/mines">
+        <span>
+          <IconMines />
+        </span>
+        <span>Mines</span>
+      </router-link>
+      <router-link to="/">
+        <span>
+          <IconKeno />
+        </span>
+        <span>Keno</span>
+      </router-link>
     </div>
     <div class="nav-user">
       <div class="nav-user-balance"><span>{{userBalance}}</span><Currency :symbol="userCurrency" :size="20" /></div>
-      <div class="nav-user-deposit"><img class="deposit-image" src="@/assets/games/icon_plus.svg" alt="" /><span>Deposit</span></div>
+      <div class="nav-user-deposit"><img class="deposit-image" src="@/assets/icons/icon_plus.svg" alt="" /><span>Deposit</span></div>
       <div class="nav-user-avatar"><Avatar :avatar="$store.getters.getUserAvatar" /></div>
     </div>
   </div>
+
+
+
 </template>
 
 <script>
 import Avatar from '@/components/Avatar'
 import Currency from '@/components/Currency'
+import IconCrash from '@/components/navigation/icons/IconCrash'
+import IconDice from '@/components/navigation/icons/IconDice'
+import IconPlinko from '@/components/navigation/icons/IconPlinko'
+import IconRoulette from '@/components/navigation/icons/IconRoulette'
+import IconTower from '@/components/navigation/icons/IconTower'
+import IconSlots from '@/components/navigation/icons/IconSlots'
+import IconHilo from '@/components/navigation/icons/IconHilo'
+import IconMines from '@/components/navigation/icons/IconMines'
+import IconKeno from '@/components/navigation/icons/IconKeno'
+import IconWheel from '@/components/navigation/icons/IconWheel'
 export default {
   name: 'NavTop',
-  components: { Currency, Avatar },
+  components: { IconWheel, IconKeno, IconMines, IconHilo, IconSlots, IconTower, IconRoulette, IconPlinko, IconDice, IconCrash, Currency, Avatar },
   computed: {
     userBalance: function() {
       return this.$store.getters.getUserBalance
@@ -49,7 +112,7 @@ export default {
     justify-content: space-between;
 
     .nav-logo {
-      padding: 10px 30px;
+      padding: 10px 20px;
 
       img {
         height: 40px;
@@ -59,19 +122,38 @@ export default {
 
     .nav-menu {
       display: flex;
+      width: 100%;
+      padding-right: 20px;
       //align-items: center;
       a {
         flex: 1;
         display: flex;
         align-items: center;
+        justify-content: center;
         position: relative;
         height: 100%;
-        padding: 0 10px;
-        margin: 0 5px;
+        padding: 0 8px;
+        margin: 0 1px;
         font-weight: bold;
         color: #3F446D;
         text-decoration: none;
         transition: .3s ease;
+
+        > span {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          &:first-of-type {
+            margin-right: 3px;
+          }
+        }
+
+        svg {
+          width: 16px;
+          height: 16px;
+          fill: #3F446D;
+          transition: .3s ease;
+        }
 
         &:first-of-type {
           margin-left: 0;
@@ -100,6 +182,10 @@ export default {
           &:after {
             visibility: visible;
             opacity: 1;
+          }
+
+          svg {
+            fill: #FFF;
           }
         }
       }

@@ -27,6 +27,11 @@ const routes = [
     name: 'Tower',
     component: () => import('../components/games/tower/Tower')
   },
+  {
+    path: '/wheel',
+    name: 'Wheel',
+    component: () => import('../components/games/wheel/Wheel')
+  },
 ]
 
 const router = createRouter({

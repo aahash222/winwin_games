@@ -32,7 +32,7 @@
         </div>
 
         <div></div>
-        {{ clientSeed }}
+
       </div>
 
       <DiceBet
@@ -143,7 +143,6 @@ export default {
       console.log(answer)
 
       if (answer.status === 'success') {
-
         this.$store.commit('setServerSeedHash', answer.data.server_seed_hash)
       } else if (answer.status === 'error') {
         this.$store.dispatch('notification', { type: 'error', text: answer.message, isClose: false, timer: 2000 }).then()
@@ -215,7 +214,7 @@ export default {
         flex: 1;
 
         background-color: #0C0E1C;
-        background-image: url("./../../../assets/games/dice_background.svg");
+        background-image: url("./../../../assets/games/dice/dice_background.svg");
         background-size: cover;
 
         display: flex;
@@ -240,7 +239,7 @@ export default {
               margin: 0 5px;
               width: 80px;
               height: 80px;
-              background-image: url("./../../../assets/games/dice_planet.svg");
+              background-image: url("./../../../assets/games/dice/dice_planet.svg");
               font-size: 44px;
               font-family: 'Muller', 'Roboto', sans-serif;
               font-weight: 700;

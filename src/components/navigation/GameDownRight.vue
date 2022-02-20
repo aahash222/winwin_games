@@ -5,27 +5,34 @@
       <FairMenu id="fairMenu" v-if="fairMenu" />
     </transition>
 
-    <div><a @click="openBet()">test bet</a></div>
-    <div><a><img src="@/assets/games/icon_keys.svg" alt="" /></a></div>
-    <div><a @click="fairMenu = !fairMenu"><img src="@/assets/games/icon_sec.svg" alt="" /></a></div>
-    <div><a><img src="@/assets/games/icon_stats.svg" alt="" /></a></div>
-    <div><a><img src="@/assets/games/icon_help.svg" alt="" /></a></div>
-    <div><a><img src="@/assets/games/icon_settings.svg" alt="" /></a></div>
+    <transition name="slide-fade">
+      <Hotkeys id="hotkeysMenu" v-if="hotkeysMenu" />
+    </transition>
+
+
+    <div class="menu-game-item"><a @click="hotkeysMenu = !hotkeysMenu"><img src="@/assets/icons/icon_keys.svg" alt="" /></a></div>
+    <div class="menu-game-item"><a @click="fairMenu = !fairMenu"><img src="@/assets/icons/icon_sec.svg" alt="" /></a></div>
+    <div class="menu-game-item"><a><img src="@/assets/icons/icon_stats.svg" alt="" /></a></div>
+    <div class="menu-game-item"><a><img src="@/assets/icons/icon_help.svg" alt="" /></a></div>
+    <div class="menu-game-item"><a><img src="@/assets/icons/icon_settings.svg" alt="" /></a></div>
   </div>
 </template>
 
 <script>
 import FairMenu from '@/components/navigation/FairMenu'
+import Hotkeys from '@/components/navigation/Hotkeys'
 export default {
   name: 'GameDownRight',
-  components: { FairMenu },
+  components: { Hotkeys, FairMenu },
   data() {
     return {
-      fairMenu: false
+      fairMenu: false,
+      hotkeysMenu: false,
     }
   },
   beforeUnmount () {
     window.removeEventListener('click', this.fairMenuClick)
+    window.removeEventListener('click', this.hotkeysMenuClick)
   },
   watch: {
     fairMenu: function(value) {
@@ -36,14 +43,26 @@ export default {
       } else {
         window.removeEventListener('click', this.fairMenuClick)
       }
+    },
+    hotkeysMenu: function(value) {
+      if (value === true) {
+        setTimeout(() => {
+          window.addEventListener('click', this.hotkeysMenuClick)
+        }, 10)
+      } else {
+        window.removeEventListener('click', this.hotkeysMenuClick)
+      }
     }
   },
   methods: {
-    openBet: function() {
-      this.$store.commit('openModalBet', '205e7548-b602-4868-abec-6132c08ae32c')
-    },
     fairMenuClick: function(e) {
       const menu = document.getElementById('fairMenu')
+      if (menu.contains(e.target) === false) {
+        this.fairMenu = false
+      }
+    },
+    hotkeysMenuClick: function(e) {
+      const menu = document.getElementById('hotkeysMenu')
       if (menu.contains(e.target) === false) {
         this.fairMenu = false
       }
@@ -75,7 +94,7 @@ export default {
       opacity: 0;
     }
 
-    > div {
+    > .menu-game-item {
       margin: 0 5px;
       > a {
         cursor: pointer;

@@ -26,6 +26,7 @@ app.use(VueNativeSock, 'wss://127.0.0.1', {
     if (this.format === 'json' && event.data) {
       msg = JSON.parse(event.data)
       if (msg.action) {
+        console.log('SOCKET: ', msg.action, msg.data)
 
         if ('socket_' + msg.action in this.store._actions) {
           this.store.dispatch('socket_' + msg.action, msg.data).then()

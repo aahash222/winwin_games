@@ -1,5 +1,6 @@
 const moduleGames = {
   state: {
+    session: null,
     user: {
       balance: 0,
       currency: null,
@@ -7,7 +8,7 @@ const moduleGames = {
     },
     games: {
       decimal: 0,
-      names: { 1: 'Dice' },
+      names: { 1: 'Dice', 2: 'Mines', 3: 'Plinko', 4: 'Tower' },
     },
     serverSeedHash: '',
     clientSeed: localStorage.getItem('clientSeed') || null,
@@ -15,6 +16,7 @@ const moduleGames = {
   },
 
   getters: {
+    getSession: state => state.session,
     getGameDecimal: state => state.games.decimal,
     getGameNames: state => state.games.names,
     getUserBalance: state => state.user.balance,
@@ -25,6 +27,9 @@ const moduleGames = {
     isClientSeedRandom: state => state.clientSeedMode === 'random',
   },
   mutations: {
+    setSession (state, value) {
+      state.session = value
+    },
     setGameDecimal (state, value) {
       state.games.decimal = value
     },
