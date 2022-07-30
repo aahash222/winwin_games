@@ -8,7 +8,7 @@ const moduleGames = {
     },
     games: {
       decimal: 0,
-      names: { 1: 'Dice', 2: 'Mines', 3: 'Plinko', 4: 'Tower' },
+      names: { 1: 'Dice', 2: 'Mines', 3: 'Plinko', 4: 'Tower', 5: 'Wheel', 6: 'Roulette', 7: 'HiLo' },
     },
     serverSeedHash: '',
     clientSeed: localStorage.getItem('clientSeed') || null,
