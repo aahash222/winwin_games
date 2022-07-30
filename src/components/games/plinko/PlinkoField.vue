@@ -848,6 +848,7 @@ export default {
         .holes-edit {
           position: absolute;
           right: -90px;
+          top: -2px;
           width: 80px;
           text-align: left;
           font-weight: bold;

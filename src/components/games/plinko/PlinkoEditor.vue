@@ -3,7 +3,7 @@
 
     <transition name="slide-fade" mode="out-in">
       <div v-show="customOpen" class="custom-save-presets">
-        <div class="custom-clear" @click="clearPresets">CLEAR ALL <img src="@/assets/icons/icon_trash.svg" alt="" /></div>
+        <div class="custom-clear" @click="clearPresets">CLEAR ALL <img class="icon-white" src="@/assets/icons/icon_trash.svg" alt="" /></div>
         <div class="presets-title">MY PRESETS</div>
         <div v-if="customPresets.length === 0">no presets</div>
         <div v-else>
@@ -13,7 +13,7 @@
             </div>
           </div>
         </div>
-        <div class="presets-close"><span @click="closePresets"><img src="@/assets/icons/icon_close.svg" alt="" /> close</span></div>
+        <div class="presets-close"><span @click="closePresets"><img class="icon-white" src="@/assets/icons/icon_close.svg" alt="" /> close</span></div>
       </div>
     </transition>
 
@@ -65,14 +65,14 @@
       <div class="holes-rtp">
         <div class="custom-buttons">
 
-          <div v-if="customSaved" class="custom-buttons-save"><img src="@/assets/icons/icon_save.svg" alt="" /></div>
-          <button @click="savePreset"><svg src="@/assets/icons/icon_save.svg" alt="" /></button>
-          <button @click="openPresets"><img src="@/assets/icons/icon_open.svg" alt="" /></button>
+          <div v-if="customSaved" class="custom-buttons-save"><img class="icon-white" src="@/assets/icons/icon_save.svg" alt="" /></div>
+          <button @click="savePreset"><img class="icon-white" src="@/assets/icons/icon_save.svg" alt="" /></button>
+          <button @click="openPresets"><img class="icon-white" src="@/assets/icons/icon_open.svg" alt="" /></button>
         </div>
         <div class="holes-rtp-value-wrap">
           <div class="holes-rtp-value" :class="{error: gameRTPError, shake: gameRTPError}">
             <span>RTP {{gameRTP}}%</span>
-            <span class="holes-rtp-help"><img src="@/assets/icons/icon_question.svg" alt="" /></span>
+            <span class="holes-rtp-help"><img class="icon-white" src="@/assets/icons/icon_question.svg" alt="" /></span>
 
             <div class="holes-rtp-tooltip">
 
@@ -308,13 +308,38 @@ export default {
         justify-content: center;
         font-weight: bold;
         cursor: pointer;
+        > span {
+          align-self: flex-end;
+          > img {
+            vertical-align: middle;
+            height: 16px;
+          }
+        }
       }
       .presets-title {
         font-weight: bold;
+        margin-top: 4px;
       }
       .custom-clear {
+        position: absolute;
+        top: 3px;
+        right: 5px;
+        font-size: 12px;
+
+        border: 1px solid #00769c;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        padding: 2px 8px;
+        cursor: pointer;
+        transition: .3s ease;
         > img {
-          height: 20px;
+          margin-left: 6px;
+          margin-top: -3px;
+          height: 12px;
+        }
+        &:hover {
+          border-color: #00bfff;
         }
       }
     }
@@ -448,6 +473,24 @@ export default {
               margin-right: 3px;
             }
           }
+
+          .custom-buttons-save {
+            color: #fff;
+            position: absolute;
+            left: 4px;
+            animation: custom-save .5s ease-in-out;
+
+            width: 24px;
+            height: 24px;
+            > img {
+              height: 14px;
+            }
+          }
+
+          @keyframes custom-save {
+            0% {transform: translateX(0);}
+            100% {transform: translateX(30px) scale(0.7);}
+          }
         }
 
         .holes-rtp-value-wrap {
@@ -563,7 +606,6 @@ export default {
 
 
     }
-
 
   }
 </style>
