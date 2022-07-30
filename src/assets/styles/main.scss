@@ -1,13 +1,16 @@
 //@import url('https://fonts.cdnfonts.com/css/bahnschrift');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@800&display=swap');
 
+/*
 @font-face {
   font-family: 'GolosUIWebBold';
-  src:
-          url('/static/fonts/Golos-UI_Bold.woff2') format('woff2'),
-          url('/static/fonts/Golos-UI_Bold.woff') format('woff');
+  src: url('/static/fonts/Golos-UI_Bold.woff2') format('woff2'),
+  url('/static/fonts/Golos-UI_Bold.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
+*/
 @font-face {
   font-family: 'Muller';
   src: local('Muller Bold'), local('Muller-Bold'),
@@ -41,7 +44,8 @@ html, body {
 }
 
 #app, input, button, select {
-  font-family: 'GolosUIWebBold', 'Roboto', Arial, sans-serif;
+  //font-family: 'GolosUIWebBold', 'Roboto', Arial, sans-serif;
+  font-family: 'Roboto', Arial, sans-serif;
   font-weight: 600;
 }
 button, a {
