@@ -57,10 +57,9 @@
 import random from '@/mixins/random'
 import TowerBet from '@/components/games/tower/TowerBet'
 import MinesBoom from '@/components/games/mines/MinesBoom'
-import Currency from '@/components/Currency'
 export default {
   name: 'Tower',
-  components: { Currency, MinesBoom, TowerBet },
+  components: { MinesBoom, TowerBet },
   mixins: [random],
   data() {
     return {
@@ -85,6 +84,9 @@ export default {
     }
   },
   computed: {
+    clientSeed: function() {
+      return this.$store.getters.getClientSeed
+    },
     userCurrency: function() {
       return this.$store.getters.getUserCurrency
     },
@@ -144,7 +146,7 @@ export default {
     this.$store.commit('subscribeSocketTowerSelect')
     this.$store.commit('subscribeSocketTowerCashout')
 
-    this.clientSeed = this.getRandomString(32)
+    //this.clientSeed = this.getRandomString(32)
   },
   methods: {
     sendBet: function() {
@@ -158,7 +160,7 @@ export default {
         client_seed: this.clientSeed
       })
 
-      this.clientSeed = this.getRandomString(32)
+      this.$store.dispatch('setClientSeedAfterBet')
     },
     sendSelect: function(index) {
       if (!this.active) return
