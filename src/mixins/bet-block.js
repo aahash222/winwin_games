@@ -2,6 +2,9 @@ import Inputs from '@/components/games/Inputs'
 
 export default {
 
+  computed: {
+
+  },
   methods: {
     inputBet: function(e) {
       if (this.locked) return

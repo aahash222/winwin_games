@@ -49,13 +49,19 @@
     flex-direction: column;
   }
 
-  .bet-input-group,
+  .bet-input-group{
+
+  }
   .block-input {
     margin-top: 10px;
     position: relative;
     &:first-of-type {
-      margin-top: 0;
+      //margin-top: 0;
     }
+  }
+
+  .block-input-first {
+    margin-top: 0;
   }
 
   .bet-input-group {
@@ -79,12 +85,15 @@
       height: 40px;
       border-radius: 8px;
       color: #FFF;
-      //background: #4457FF linear-gradient(180deg, #4457FF 0%, #3C4DE1 100%);
-      background: #4457FF;
+      background: linear-gradient(180deg, #4457FF 0%, #713ce1 100%);
+      //background: linear-gradient(180deg, #000000 0%, #ffffff 100%);
+      background-size:100% 200%;
+      //background: #4457FF;
       font-size: 24px;
       &:hover {
         //font-size: 25px;
-        background-color: #5165ff;
+        //background-color: #5165ff;
+        background-position: 100%;
         transform: scale(1.02);
       }
       &:disabled {
