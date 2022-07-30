@@ -32,6 +32,16 @@ const routes = [
     name: 'Wheel',
     component: () => import('../components/games/wheel/Wheel')
   },
+  {
+    path: '/roulette',
+    name: 'Roulette',
+    component: () => import('../components/games/roulette/Roulette')
+  },
+  {
+    path: '/hilo',
+    name: 'Hilo',
+    component: () => import('../components/games/hilo/Hilo')
+  },
 ]
 
 const router = createRouter({

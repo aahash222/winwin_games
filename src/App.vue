@@ -107,6 +107,7 @@ export default {
 
   methods: {
     changeGame: function(data) {
+
       console.log('Change game to ', this.$route.name)
 
       this.$store.dispatch('socketDisconnect').then(() => {

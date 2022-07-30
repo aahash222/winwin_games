@@ -5,7 +5,10 @@ import store from './store'
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import VueNativeSock from 'vue-native-websocket-vue3'
+import VueNativeSock from '@/components/elements/socket/socket'
+
+
+import Currency from '@/components/Currency'
 
 const app = createApp(App)
 
@@ -26,7 +29,7 @@ app.use(VueNativeSock, 'wss://127.0.0.1', {
     if (this.format === 'json' && event.data) {
       msg = JSON.parse(event.data)
       if (msg.action) {
-        console.log('SOCKET: ', msg.action, msg.data)
+        if (msg.action !== 'ping') console.log('SOCKET: ', msg.action, msg.data)
 
         if ('socket_' + msg.action in this.store._actions) {
           this.store.dispatch('socket_' + msg.action, msg.data).then()
@@ -43,6 +46,8 @@ app.use(VueNativeSock, 'wss://127.0.0.1', {
     this.store.commit(target, msg)
   }
 })
+
+app.component('Currency', Currency)
 
 app.mount('#app')
 

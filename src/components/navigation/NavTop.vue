@@ -22,7 +22,7 @@
         </span>
         <span>Plinko</span>
       </router-link>
-      <router-link to="/">
+      <router-link to="/roulette">
         <span>
           <IconRoulette />
         </span>
@@ -46,7 +46,7 @@
         </span>
         <span>Slots</span>
       </router-link>
-      <router-link to="/">
+      <router-link to="/hilo">
         <span>
           <IconHilo />
         </span>
@@ -78,7 +78,6 @@
 
 <script>
 import Avatar from '@/components/Avatar'
-import Currency from '@/components/Currency'
 import IconCrash from '@/components/navigation/icons/IconCrash'
 import IconDice from '@/components/navigation/icons/IconDice'
 import IconPlinko from '@/components/navigation/icons/IconPlinko'
@@ -91,7 +90,7 @@ import IconKeno from '@/components/navigation/icons/IconKeno'
 import IconWheel from '@/components/navigation/icons/IconWheel'
 export default {
   name: 'NavTop',
-  components: { IconWheel, IconKeno, IconMines, IconHilo, IconSlots, IconTower, IconRoulette, IconPlinko, IconDice, IconCrash, Currency, Avatar },
+  components: { IconWheel, IconKeno, IconMines, IconHilo, IconSlots, IconTower, IconRoulette, IconPlinko, IconDice, IconCrash, Avatar },
   computed: {
     userBalance: function() {
       return this.$store.getters.getUserBalance
@@ -110,6 +109,7 @@ export default {
     border-bottom: 1px solid #1A1D33;
     display: flex;
     justify-content: space-between;
+    z-index: 1;
 
     .nav-logo {
       padding: 10px 20px;
@@ -135,7 +135,7 @@ export default {
         padding: 0 8px;
         margin: 0 1px;
         font-weight: bold;
-        color: #3F446D;
+        color: #767FD1;
         text-decoration: none;
         transition: .3s ease;
 
@@ -151,7 +151,7 @@ export default {
         svg {
           width: 16px;
           height: 16px;
-          fill: #3F446D;
+          fill: #767FD1;
           transition: .3s ease;
         }
 
