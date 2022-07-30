@@ -49,14 +49,14 @@
       cursor: pointer;
       flex: 1;
       background-color: #222646;
-      color: #6871C1;
+      color: #767FD1;
       border-radius: 6px;
       margin: 5px;
       padding: 5px 0;
 
       &:hover {
         color: #FFF;
-        background-color: #6871C1;
+        background-color: #767FD1;
       }
       &:first-of-type {
         margin-left: 0;
@@ -81,7 +81,7 @@
         border-radius: 6px;
         font-size: 18px;
         background: none;
-        color: #6871C1;
+        color: #767FD1;
         margin-top: -2px;
 
         &.active {
@@ -100,7 +100,7 @@
     background-color: #222646;
     border-radius: 6px;
     width: 100%;
-    color: #6871C1;
+    color: #767FD1;
     height: 36px;
     &:hover {
       color: #FFF;
