@@ -19,10 +19,9 @@
 
 <script>
 import Avatar from '@/components/Avatar'
-import Currency from '@/components/Currency'
 export default {
   name: 'StatsLine',
-  components: { Currency, Avatar },
+  components: { Avatar },
   computed: {
     transactions: function() {
       return this.$store.getters.getStatsTransactions
