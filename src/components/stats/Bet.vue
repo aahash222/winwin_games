@@ -13,7 +13,7 @@
         </div>
         <div class="bet-info-user">
           <div><Avatar :avatar="betData.user.avatar !== undefined ? betData.user.avatar : betData.session" :size="20" /></div>
-          <div>{{betData.user}}</div>
+          <div>{{ betData.user.name === '' ? 'Demo' : betData.user.name }}</div>
         </div>
         <div class="bet-info-time">{{ printTimeFull(betData.time) }}</div>
       </div>
@@ -89,11 +89,10 @@ import times from '@/mixins/times'
 import copy from '@/mixins/copy'
 import Avatar from '@/components/Avatar'
 import BetDice from '@/components/stats/Bet/BetDice'
-import Currency from '@/components/Currency'
 import GameIcon from '@/components/navigation/icons/GameIcon'
 export default {
   name: 'Bet',
-  components: { GameIcon, Currency, BetDice, Avatar },
+  components: { GameIcon, BetDice, Avatar },
   mixins: [times, copy],
   data() {
     return {
@@ -188,7 +187,7 @@ export default {
         margin-left: -10px;
         .bet-info-id {
           > span {
-            color: #6871C1;
+            color: #767FD1;
             margin-right: 3px;
           }
         }
@@ -201,7 +200,7 @@ export default {
           margin-right: 20px;
         }
         .bet-info-game {
-          color: #6871C1;
+          color: #767FD1;
           display: flex;
           align-items: center;
           > span {
@@ -232,7 +231,7 @@ export default {
           background-color: #080911;
           border-radius: 10px;
           .bet-box-title {
-            color: #6871C1;
+            color: #767FD1;
             font-size: 14px;
           }
           .bet-box-value {
@@ -268,7 +267,7 @@ export default {
         .bet-info-verify-open {
           cursor: pointer;
           font-size: 14px;
-          color: #6871C1;
+          color: #767FD1;
           display: flex;
           justify-content: space-between;
           transition: .3s ease;
@@ -292,7 +291,7 @@ export default {
 
             label {
               padding-left: 5px;
-              color: #6871C1;
+              color: #767FD1;
               font-size: 14px;
 
             }
