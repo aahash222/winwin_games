@@ -35,7 +35,7 @@ export default {
 
     }
     .hotkeys-data {
-      color: #6871C1;
+      color: #767FD1;
       font-size: 14px;
       margin-top: 10px;
 
