@@ -14,10 +14,10 @@
         <div class="dice-central">
 
           <div class="dice-result">
-            <div>{{ resultPrint[0] }}</div>
-            <div>{{ resultPrint[1] }}</div>
-            <div>{{ resultPrint[2] }}</div>
-            <div>{{ resultPrint[3] }}</div>
+            <div class="planet-1">{{ resultPrint[0] }}</div>
+            <div class="planet-2">{{ resultPrint[1] }}</div>
+            <div class="planet-3">{{ resultPrint[2] }}</div>
+            <div class="planet-4">{{ resultPrint[3] }}</div>
           </div>
 
           <div class="slider-wrap">
@@ -53,12 +53,13 @@
 <script>
 import DiceSlider from '@/components/games/dice/DiceSlider'
 import random from '@/mixins/random'
+import lastBets from '@/mixins/last-bets'
 import DiceBet from '@/components/games/dice/DiceBet'
 import DiceLast from '@/components/games/dice/DiceLast'
 export default {
   name: 'Dice',
   components: { DiceLast, DiceBet, DiceSlider },
-  mixins: [random],
+  mixins: [random, lastBets],
   data () {
     return {
       screenHeight: 0,
@@ -66,8 +67,7 @@ export default {
       bet: 0.1,
       mode: 0,
       result: -1,
-      //clientSeed: null,
-      lastBets: [],
+
       resultPrint: [0, 0, 0, 0],
       animationRoll: null,
 
@@ -103,7 +103,7 @@ export default {
       if (data === null) return
 
       this.receiveBetAnswer(data)
-      this.$store.commit('subscribeSocketDiceBet')
+      //this.$store.commit('subscribeSocketDiceBet')
     }
   },
   mounted () {
@@ -114,7 +114,7 @@ export default {
   },
   created () {
     this.$store.commit('subscribeSocketDice')
-    //this.clientSeed = this.getRandomString(32)
+    this.$store.commit('subscribeSocketDiceBet')
   },
 
 
@@ -135,7 +135,6 @@ export default {
       this.startAnimationRoll()
       this.$store.dispatch('sendSocketDiceBet', { position: this.selectPosition, mode: this.mode, bet: this.bet, client_seed: this.clientSeed })
 
-      //this.clientSeed = this.getRandomString(32)
       this.$store.dispatch('setClientSeedAfterBet')
     },
     receiveDiceAnswer: function(answer) {
@@ -166,13 +165,6 @@ export default {
         } else {
           this.$store.dispatch('notification', { type: 'error', text: answer.message, isClose: false, timer: 2000 }).then()
         }
-      }
-    },
-    addNewLastBet: function(uuid, value) {
-      value.uuid = uuid
-      this.lastBets.push(value)
-      if (this.lastBets.length > 6) {
-        this.lastBets.shift()
       }
     },
     printResult: function(value) {
@@ -239,10 +231,23 @@ export default {
               margin: 0 5px;
               width: 80px;
               height: 80px;
-              background-image: url("./../../../assets/games/dice/dice_planet.svg");
+              // background-image: url("./../../../assets/games/dice/dice_planet.svg");
+              background-size: contain;
               font-size: 44px;
               font-family: 'Muller', 'Roboto', sans-serif;
               font-weight: 700;
+              &.planet-1 {
+                background-image: url("./../../../assets/games/dice/planet_1.webp");
+              }
+              &.planet-2 {
+                background-image: url("./../../../assets/games/dice/planet_2.webp");
+              }
+              &.planet-3 {
+                background-image: url("./../../../assets/games/dice/planet_3.webp");
+              }
+              &.planet-4 {
+                background-image: url("./../../../assets/games/dice/planet_4.webp");
+              }
             }
           }
 

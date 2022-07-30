@@ -90,15 +90,15 @@ export default {
         padding: 5px;
       }
       .ping-text {
-        font-size: 11px;
+        font-size: 8px;
         text-align: left;
 
         > div:first-of-type {
+          font-size: 11px;
           line-height: 10px;
           text-transform: uppercase;
-          color: #3E447C;
+          color: #767FD1;
         }
-
       }
 
       .menu-my-bets {
@@ -107,7 +107,7 @@ export default {
         > button {
           border-radius: 6px;
           background-color: #222646;
-          color: #6871C1;
+          color: #767FD1;
           height: 35px;
           padding: 0 15px;
           &:hover {

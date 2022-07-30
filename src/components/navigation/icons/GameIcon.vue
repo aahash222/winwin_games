@@ -2,11 +2,11 @@
   <IconCrash v-if="false" :style="{ height: size + 'px', fill: '#' + fill}" />
   <IconDice v-if="game === 1" :style="{ height: size + 'px', fill: '#' + fill}" />
   <IconPlinko v-if="game === 3" :style="{ height: size + 'px', fill: '#' + fill}" />
-  <IconRoulette v-if="false" :style="{ height: size + 'px', fill: '#' + fill}" />
+  <IconRoulette v-if="game === 6" :style="{ height: size + 'px', fill: '#' + fill}" />
   <IconTower v-if="game === 4" :style="{ height: size + 'px', fill: '#' + fill}" />
-  <IconWheel v-if="false" :style="{ height: size + 'px', fill: '#' + fill}" />
+  <IconWheel v-if="game === 5" :style="{ height: size + 'px', fill: '#' + fill}" />
   <IconSlots v-if="false" :style="{ height: size + 'px', fill: '#' + fill}" />
-  <IconHilo v-if="false" :style="{ height: size + 'px', fill: '#' + fill}" />
+  <IconHilo v-if="game === 7" :style="{ height: size + 'px', fill: '#' + fill}" />
   <IconMines v-if="game === 2" :style="{ height: size + 'px', fill: '#' + fill}" />
   <IconKeno v-if="false" :style="{ height: size + 'px', fill: '#' + fill}" />
 </template>

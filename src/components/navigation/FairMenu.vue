@@ -189,7 +189,7 @@ export default {
 
     }
     .fair-menu-text {
-      color: #6871C1;
+      color: #767FD1;
       margin: 10px 0;
       font-size: 14px;
     }

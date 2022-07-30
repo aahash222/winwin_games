@@ -8,7 +8,7 @@
 
     <div class="bet-block-manual">
 
-      <div class="block-input" :class="{ error: errors.bet }">
+      <div class="block-input block-input-first" :class="{ error: errors.bet }">
         <label>Bet: </label>
         <div class="bet-input-block">
           <div class="error-tooltip" v-show="errors.bet"><span>{{ errors.bet }}</span></div>
@@ -76,13 +76,11 @@
 
 <script>
 import Inputs from '../Inputs'
-import Currency from '@/components/Currency'
 import betBlock from '@/mixins/bet-block'
 
 export default {
   name: 'DiceBet',
   mixins: [betBlock],
-  components: { Currency },
   props: {
     locked: { type: Boolean },
     position: { type: Number },

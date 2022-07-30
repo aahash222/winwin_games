@@ -184,7 +184,7 @@ export default {
       padding: 0 8px 0 17px;
       margin-bottom: 4px;
       > div {
-        color: #6871C1;
+        color: #767FD1;
         font-size: 12px;
       }
     }
