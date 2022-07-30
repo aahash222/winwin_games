@@ -39,10 +39,8 @@
 
 <script>
 import times from '@/mixins/times'
-import Currency from '@/components/Currency'
 export default {
   name: 'StatsHistory',
-  components: { Currency },
   mixins: [times],
   data() {
     return {
@@ -107,7 +105,7 @@ export default {
         margin: 3px 0;
         > div {
           &:first-of-type {
-            color: #6871C1;
+            color: #767FD1;
           }
         }
       }
