@@ -53,11 +53,10 @@
 
 <script>
 import Avatar from '@/components/Avatar'
-import Currency from '@/components/Currency'
 import GameIcon from '@/components/navigation/icons/GameIcon'
 export default {
   name: 'StatsList',
-  components: { GameIcon, Currency, Avatar },
+  components: { GameIcon, Avatar },
   data() {
     return {
       countLog: 0,

@@ -7,7 +7,7 @@
 
     <div class="bet-block-manual">
 
-      <div class="block-input" :class="{ error: errors.bet }">
+      <div class="block-input block-input-first" :class="{ error: errors.bet }">
         <label>Bet: </label>
         <div class="bet-input-block">
           <div class="error-tooltip" v-show="errors.bet"><span>{{ errors.bet }}</span></div>
@@ -47,7 +47,6 @@
 </template>
 
 <script>
-import Inputs from '@/components/games/Inputs'
 import betBlock from '@/mixins/bet-block'
 
 export default {
@@ -112,7 +111,7 @@ export default {
     .bet-button {
       .random {
         margin-bottom: 10px;
-        color: #6871C1;
+        color: #767FD1;
         background-color: #222646;
         font-size: 16px;
         &:hover {
