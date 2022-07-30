@@ -67,10 +67,10 @@
 import MinesBet from '@/components/games/mines/MinesBet'
 import random from '@/mixins/random'
 import MinesBoom from '@/components/games/mines/MinesBoom'
-import Currency from '@/components/Currency'
+
 export default {
   name: 'Mines',
-  components: { Currency, MinesBoom, MinesBet },
+  components: { MinesBoom, MinesBet },
   mixins: [random],
   data() {
     return {
@@ -98,9 +98,12 @@ export default {
     this.$store.commit('subscribeSocketMinesSelect')
     this.$store.commit('subscribeSocketMinesCashout')
 
-    this.clientSeed = this.getRandomString(32)
+    //this.clientSeed = this.getRandomString(32)
   },
   computed: {
+    clientSeed: function() {
+      return this.$store.getters.getClientSeed
+    },
     socketMines() {
       return this.$store.getters.subscribeSocketMines
     },
@@ -163,7 +166,7 @@ export default {
       })
 
       this.winAmount = 0.0
-      this.clientSeed = this.getRandomString(32)
+      this.$store.dispatch('setClientSeedAfterBet')
     },
     sendSelect: function (index) {
       if (this.active !== true) return
@@ -350,12 +353,12 @@ export default {
             color: #FFD05B;
             > span {
               font-size: 18px;
-              color: #6871C1;
+              color: #767FD1;
             }
           }
           .game-mines-payout-next-start {
             > span {
-              color: #6871C1;
+              color: #767FD1;
             }
           }
         }
