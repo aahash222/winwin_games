@@ -1,0 +1,108 @@
+.hole {
+  width: 100%;
+  margin: 0 1px;
+  background-color: #00acff;
+  border-radius: 4px;
+  transition: .5s ease;
+  position: relative;
+  &.active {
+    animation: shake-hole 400ms ease-in-out;
+  }
+
+  @keyframes shake-hole {
+    0% {transform: translateY(0);}
+    12.5% {transform: translateY(7px); background-color: #ffdd47;}
+    37.5% {transform: translateY(-4px)}
+    62.5% {transform: translateY(2px)}
+    87.5% {transform: translateY(-1px)}
+    100% {transform: translateY(0)}
+  }
+
+  .hole-data {
+    position: relative;
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+    padding: 2px 0;
+
+    > span {
+      &:first-of-type {
+        font-weight: bold;
+        font-size: 13px;
+        vertical-align: text-bottom;
+        color: #1d1e23;
+      }
+      &:last-of-type {
+        font-size: 10px;
+        color: #1d1e23;
+      }
+    }
+  }
+  .hole-tooltip {
+    visibility: hidden;
+
+    white-space: nowrap;
+    background-color: #161718;
+    color: #00acff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 3px 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    opacity: 0;
+    transition: opacity 0.3s;
+
+    > div  {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: bold;
+      &:last-of-type {
+        margin-top: 2px;
+      }
+      > span {
+        &:first-of-type {
+          min-width: 60px;
+          text-align: left;
+          margin-right: 3px;
+        }
+        &:last-of-type {
+          background-color: #2b2d2f;
+          width: 100%;
+          padding: 0 5px;
+          border-radius: 4px;
+          text-align: left;
+        }
+      }
+    }
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #161718 transparent transparent transparent;
+    }
+    &.error {
+      opacity: 1;
+      visibility: visible;
+      background-color: #FF4D4D;
+      color: #FFF;
+      &:after {
+        border-color: #FF4D4D transparent transparent transparent;
+      }
+    }
+  }
+  &:hover {
+    .hole-tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
